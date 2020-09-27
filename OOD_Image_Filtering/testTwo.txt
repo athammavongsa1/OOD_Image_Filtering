@@ -1,0 +1,4 @@
+blur
+save carrieBlur.jpg
+dither
+save carrieDither.jpg

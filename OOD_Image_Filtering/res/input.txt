@@ -1,0 +1,41 @@
+load carrie.jpg
+blur 
+save carrieBlur.jpg
+
+load carrie.jpg
+sharpen
+save carrieSharpen.jpg
+
+load carrie.jpg
+gray
+save carrieGray.jpg
+
+load carrie.jpg
+sepia
+save carrieSepia.jpg
+
+load carrie.jpg
+dither
+save carrieDither.jpg
+
+load carrie.jpg
+mosaic 1000
+save carrieMosaic.jpg
+
+horizontalRainbow 175 200 
+save HorizontalRainbow.jpg
+
+verticalRainbow 175 150 
+save VerticalRainbow.jpg
+
+checkerboard 40 
+save Checkerboard.jpg
+
+france 300 350 
+save FranceFlag.jpg
+
+switzerland 25
+save Switzerland.jpg
+
+greece 325 275 
+save Greek.jpg 

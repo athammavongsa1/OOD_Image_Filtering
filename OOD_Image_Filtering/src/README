@@ -1,0 +1,208 @@
+Shruthi Raghuraman , Alexadriana Thammavongsa
+Object Oriented Design
+Professor Amit Shesh
+April 1, 2019
+
+README: Assignment 8: Fun with Images!
+
+    This design's model generates blurred image, a sharpened image, a grey-toned image, sepia-toned
+image, a dither, a mosaic and a checkerboard patterned image. It also includes a flag for France,
+Switzerland, and Greece. One image was provided by photographer Elliot Haney of CityYear
+headquarters, and the other by Sumeet Gajjar, the TA. Both have been authorized to be used
+in this project.
+
+    This design has a ImageInterface which allows for the following methods: blurImage,
+sharpenImage, grayScale, sepiaTone, rainbowHorizontal, rainbowVertical, dither, mosaic and
+checkerBoard. It also has the flags for: France, Switzerland, and Greece.
+All of the methods are of void return type. When called, each method modifies the image
+as intended. The Image class functions as the implementation of the  model of the design, and the
+class specifically named Driver starts the MVC. In this design, the controller loads and saves the
+image(accepts input) through a utilities interface, initializes model objects and transforms
+according to user specifications. It  writes to a new image using the model. The presentation of
+the image is the responsibility of the view which is a GUI output.
+As a result, the controller outputs the presentation of the transformed image.
+
+Batch Script Controller with this MVC:
+    If args[0] is -script and args[1] is the name of the .txt file, then
+the input from a text file is taken in by main method and goControllerForScript method is called.
+This Image's constructor takes in the image represented as a 3D int array, height, and width.
+This class represents an image and functions as the model implementation of the design.
+The operations in this class are the features that can be called from the controller by the user.
+The different features that can be called are the same that have been mandated by the
+ImageInterface. The data in this class represent the image as a 3D int array of pixels in this
+image, its height, and its width.
+
+GUI Interactive Controller with this MVC:
+    If args[0] is equal to -interactive, the controller for the GUI view is launched. The main
+method initializes this controller with parameters that grant access to the model an the view.
+The purpose of this controller is to take input from the user through the GUI. it gets user data
+from the view and calls to the model. If input data from the view is invalid in the model,
+controller notifies the view of the error. If all data is valid, controller gets the data from the
+model and outputs it to the view. The only other contact point for the controller is a
+utilizes manager interface. This interface is for creating, saving, loading, and displaying images.
+The most important part of this controller is that it is independent of a GUI dependent view. It
+utilizes the features interface method explained in lecture that decouples the controller's actions
+from the JFrame in the view. As a result, it does not have any java swing related code. Therefore,
+the controller works for other input formats as well. This controller utilizes the model to output
+to the view.
+
+Model:
+    The Image class contains all of the methods mandated by the ImageInterface. Firstly, the
+blurImage() and sharpenImage() utilize the same logic and differ only by the kernel size. As a
+result they utilize the same helper method to perform the convolution. The helper method loops
+pixel by pixel. It iterates width first, then through the height, and finally it goes through
+the number of channels. Then the helper goes through the height and the width of that kernel
+to match each part of kernel and convolve it with that pixel. The new pixel value is the sum
+of every kernel value multiplied by that pixel.
+    The greyScale() method implements two for loops and goes through the width and height. For
+gray scale, it changes the rgb values of each pixel. The calculations being performed follow
+those give by the spec. Similarly the sepia involves matrix multiplication where r, g, and b
+are all different values. Newly calculated rgb values are then applied to that image.
+    For both rainbow horizontal and vertical stripes, it divides the screen to seven
+stripes and calls the fillColor() method seven times, one per each stripe. The fillColor helper
+method creates a rectangle at the specified location with the specified height and width and
+color (rgb values). The function fillColor(int x, int y, int height, int width,
+int[][][] image, int r, int g, int b) allows design to go by rectangle, which makes implementation
+simpler. Both methods, and all three flags use the same helper just slightly refactored to account
+its respective directionality for the rectangular stripes.
+    For the checkboard() method, the user specifies the size of the squares on the checkerboard.
+This method loops through to make individual white squares. The first for loop places squares
+on all odd spaces by column. The second for loop goes through every odd row to place the square.
+The resulting is the checkerBoard pattern.
+    The dither method converts this image into a dithered image. It sets the image to gray scale and
+breaks the image down into dots utilizing the Floyd-Steinberg algorithm.This method converts this
+image into a mosaic image. The user specifies the number of random seeds within the image.
+The method then assigns each pixel of this image to the closest seed and changes the rgb values to
+the average of the rgb values of pixels in the cluster.
+    Finally, for all images that change an existing pixel (blur, sharpen gray, sepia, dither,
+mosaic) it is important  to clamp values so that every pixel value is between 0 and 255. Due to
+the ubiquitous design of the model the GUI output and the batch script utilizes the same model.
+
+Design changes: the interface for the model did not change from the previous implementation. The
+controller from the previous implementation did not change. A new controller was added to accomodate
+a different type of error handling in the new view that utilizes the gui. This controller
+calls methods from the view whereas the previous controller saved to a file.
+
+Utility class
+ImageManager and ImageManager interface were created to prevent the controller from initializing
+several models and working with the load and save operations. This isolation made testing clearer
+since the controller's task was to solely utilize user input and use the model based on the input.
+
+How to use the program:
+For Batch sript:
+Create a file in the same directory as the src folder or the same directory as the jar file.
+
+Title it input.txt file (or any text file) and make sure that the run command has the name of the
+text file configured.
+
+The user specifies different commands as stated below. Note that file name has to be given after
+load and save commands. One dimension has to be given for mosaic, checkerboard, and switzerland.
+Two dimensions have to be given for horizontalRainbow, verticalRainbow, france, and greece. load has
+to be called before commands that require a preloaded image and the save command.
+
+Program can be run in java with the args[0] argument of the main method being -script and args[1]
+being the name of the text file (in this case input.txt. User can also run the jar file with
+the following command: jar -script input.txt or any other filename.
+
+load carrie.jpg
+
+blur
+
+save carrieBlur.jpg
+
+sharpen
+
+gray
+
+sepia
+
+dither
+
+mosaic 1000
+
+horizontalRainbow 175 200
+
+verticalRainbow 175 150
+
+checkerboard 40
+
+france 300 350
+
+switzerland 25
+
+greece 325 275
+
+For GUI:
+Browse button- browses file on users computer.
+Load button- loads the file (has to be jpg).
+Apply features drop down menu- all features from model are applied here.
+Apply features button- applies the feature selected.
+Undo button- undoes the most recent feature.
+Save button- first assign a file name, then browse the computer to save to a location, then
+save button saves transformed file to that location.
+Clear script- clears the batch text area.
+Batch text area- user can run batch script here as well. However the image has to be in the same
+directory. To get an image from another directory utilize the load feature.
+Apply batch- applies the batch script. Ensure to clear after every batch.
+
+Load carrie.jpg
+
+Sharpen
+
+Grayscale
+
+Blur
+
+Sepia
+
+Dither
+
+Mosaic 1000
+
+HorizontalRainbow 175 200
+
+VerticalRainbow 175 150
+
+Checkerboard 40
+
+FlagFrance 300 350
+
+FlagSwitzerland 25
+
+FlagGreece 325 275
+
+Errors:
+Errors are shown in the gui when load and save are utilized without proper file allocation.
+Batch is incorrect if nonsense commands are given, load and save are incorrect, and methods are
+called without a loaded image.
+Errors are also thrown if user inputs incorrect dimensions.
+
+
+Program can be run in java with the args[0] argument of the main method being -interactive
+User can also run the jar file with the following command: jar -interactive.
+
+    The design of this project is based on the model view controller pattern.
+The model (class Image) accepts the data from the controller and transforms the data. The object
+oriented design is implemented in the model by having the class
+represent an image and the data of the image be an int[][][] array of pixels, the width, and the
+height. Instead of each operation returning it's result as an array, the model now transforms itself
+and has getters for its own data. The controller then uses the data from the model to call the view.
+It is the only part of the design that interacts with the user.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

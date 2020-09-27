@@ -1,0 +1,3 @@
+load carrie.jpg
+mosaic
+save carrieMosaic.jpg

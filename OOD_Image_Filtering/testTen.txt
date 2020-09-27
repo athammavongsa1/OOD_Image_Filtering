@@ -1,0 +1,6 @@
+load carrie.jpg
+blur
+save carrieBlur.jpg
+load carrie.jpg
+sepia
+save carrieSepia.jpg
